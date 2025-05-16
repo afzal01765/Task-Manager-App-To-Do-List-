@@ -1,21 +1,14 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
-import datetime
 
-class Category(models.Model):
-    title = models.CharField(max_length=128, unique=True)
-
-    def __str__(self) -> str:
-        return self.title
-
-
-class TodoTask(models.Model):
-    title = models.CharField(max_length=128)
-    description = models.CharField(max_length=255)
-    due_date = models.DateTimeField(default=datetime.datetime.now())
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE)
-    tags = models.CharField(max_length=255, blank=True)
-
-    def __str__(self) -> str:
+class Task(models.Model):
+    
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    title =  models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    created_date = models.DateTimeField(default=timezone.now)
+    completed = models.BooleanField(default=False)
+    
+    def __str__(self):
         return self.title
